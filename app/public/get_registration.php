@@ -6,25 +6,29 @@
 </head>
 <body>
 <div class="container">
-    <form action="post_registration.php" method="post" id="form" class="form">
+    <form action="/registrate" method="post" id="form" class="form">
         <h2>Регистрация!</h2>
         <div class="form-control">
             <label for="username">Username</label>
+            <label style="color: red"><?php echo $errors['name'] ?? ''; ?></label>
             <input type="text" id="username" name="name" placeholder="Enter username" required />
             <small>Error message</small>
         </div>
         <div class="form-control">
             <label for="email">Email</label>
+            <label style="color: red"><?php echo $errors['email'] ?? '';?></label>
             <input type="text" id="email" name="email" placeholder="Enter email" required/>
             <small>Error message</small>
         </div>
         <div class="form-control">
             <label for="password">Password</label>
+            <label style="color: red"><?php echo $errors['password'] ?? ''; ?></label>
             <input type="password" id="password" name="password" placeholder="Enter password" required/>
             <small>Error message</small>
         </div>
         <div class="form-control">
             <label for="password2">Confirm password</label>
+            <label style="color: red"><?php echo $errors['password-repeat'] ?? ''; ?></label>
             <input
                     type="password"
                     id="password2"

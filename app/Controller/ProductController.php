@@ -8,6 +8,7 @@ use PDOException;
 
 define('ERROR_PRODUCT_ID_REQUIRED', 'Поле product-id не должно быть пустым');
 define('ERROR_QUANTITY_REQUIRED', 'Поле quantity не должно быть пустым');
+define('ERROR_CHECK_REQUIRED', 'Введите корректный ID товара');
 
 require_once './../Model/Products.php';
 require_once './../Model/UserProducts.php';
@@ -49,40 +50,65 @@ class ProductController
 
     public function addProduct()
     {
-            $errors = $this->validateAddProduct();
+        $errors = $this->validateAddProduct();
 
-            if (empty($errors)) {
-                session_start();
-                $userId = $_SESSION['login'];
-                $productId = htmlspecialchars($_POST['product_id'], ENT_QUOTES, 'UTF-8');
-                $quantity = htmlspecialchars($_POST['quantity'], ENT_QUOTES, 'UTF-8');
+        if (empty($errors)) {
+            session_start();
+            $userId = $_SESSION['login'];
+            $productId = $_POST['product_id'];
+            $quantity = $_POST['quantity'];
 
-                try {
-                    $data = new UserProducts();
-                    $data->addProductCart($userId, $productId, $quantity);
-                } catch (PDOException $e) {
-                    echo "Ошибка при сохранении данных: " . $e->getMessage();
+            try {
+                $data = new UserProducts();
+                $checkProductId = $data->checkIdProduct($productId);
+
+                if ($checkProductId === false) {
+                    $errors['product_id'] = ERROR_CHECK_REQUIRED;
+                } else {
+                    $checkProductInCart = $data->checkProductInCart($userId, $productId);
+
+                    if ($checkProductInCart === false) {
+                        $data->addProductCart($userId, $productId, $quantity);
+                    } else {
+                        $newAmount = $quantity + $checkProductInCart['quantity'];
+                        $data->updateProductQuantity($productId, $userId, $newAmount);
+                    }
                 }
+            } catch (PDOException $e) {
+                // Логирование ошибки
+                error_log("Ошибка при добавлении продукта: " . $e->getMessage());
+                $errors['database'] = "Произошла ошибка при добавлении продукта. Пожалуйста, попробуйте позже.";
             }
+        }
 
-            require_once './../View/addProduct.php';
+        // Передаем ошибки в представление
+        require_once './../View/addProduct.php';
     }
 
-    function validateAddProduct(): array
+    public function validateAddProduct(): array
     {
         $errors = [];
 
+        // Валидация поля product_id
         if (isset($_POST['product_id'])) {
-            $productId = htmlspecialchars($_POST['product_id'], ENT_QUOTES, 'UTF-8');
-        } elseif (empty($productId)) {
-            $errors['product-id'] = ERROR_PRODUCT_ID_REQUIRED;
+            $productId = $_POST['product_id'];
+            if (empty($productId)) {
+                $errors['product_id'] = ERROR_PRODUCT_ID_REQUIRED;
+            }
+        } else {
+            $errors['product_id'] = ERROR_PRODUCT_ID_REQUIRED;
         }
 
+        // Валидация поля quantity
         if (isset($_POST['quantity'])) {
-            $quantity = htmlspecialchars($_POST['quantity'], ENT_QUOTES, 'UTF-8');
-        } elseif (empty($quantity)) {
+            $quantity = $_POST['quantity'];
+            if (empty($quantity)) {
+                $errors['quantity'] = ERROR_QUANTITY_REQUIRED;
+            }
+        } else {
             $errors['quantity'] = ERROR_QUANTITY_REQUIRED;
         }
+
         return $errors;
     }
 }

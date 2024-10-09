@@ -20,10 +20,33 @@ class UserProducts
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function checkIdProduct(int $productId)
+    {
+        $pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'arsik', '0000');
+        $stmt = $pdo->prepare("SELECT id FROM products WHERE id = :product_id;");
+        $stmt->execute(['product_id' => $productId]);
+        return $stmt->fetch();
+    }
+
+    public function checkProductInCart(int $userId, int $productId)
+    {
+        $pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'arsik', '0000');
+        $stmt = $pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id AND product_id = :product_id;");
+        $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
+        return $stmt->fetch();
+    }
+
     public function addProductCart(int $userId, int $productId, int $quantity): void
     {
         $pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'arsik', '0000');
         $stmt = $pdo->prepare("INSERT INTO user_products (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)");
         $stmt->execute(['user_id' => $userId, 'product_id' => $productId, 'quantity' => $quantity]);
+    }
+
+    public function updateProductQuantity(int $userId, int $productId, int $newAmount): void
+    {
+        $pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'arsik', '0000');
+        $stmt = $pdo->prepare("UPDATE user_products SET quantity = :quantity WHERE user_id = :user_id AND product_id = :product_id;");
+        $stmt->execute(['user_id' => $userId, 'product_id' => $productId, 'quantity' => $newAmount]);
     }
 }

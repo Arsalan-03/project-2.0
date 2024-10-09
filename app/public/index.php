@@ -32,12 +32,6 @@ if ($requestUri === '/login') {
     } else {
         echo "$requestMethod не поддерживается адресом $requestUri";
     }
-} elseif ($requestUri === '/basket') {
-    if ($requestMethod === 'GET') {
-        require_once './basket.php';
-    } else {
-        echo "$requestMethod не поддерживается адресом $requestUri";
-    }
 } else {
     http_response_code(404);
     require_once './404.php';

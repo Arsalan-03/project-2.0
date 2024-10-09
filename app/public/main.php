@@ -114,7 +114,7 @@ if (!isset($_SESSION['login'])) {
     <?php endif; ?>
     <div class="total">
         <span>Total:</span>
-        <span class="total-amount">£ . <?php echo $totalPrice; ?> </span>
+        <span class="total-amount">£ . <?php echo '$' . $totalPrice; ?> </span>
     </div>
     <div class="cart-footer">
         <button class="view-bag-btn">View Bag (1)</button>

@@ -9,7 +9,7 @@
     <form action="/registrate" method="post" id="form" class="form">
         <h2>Регистрация!</h2>
         <div class="form-control">
-            <label for="username">Username</label>
+            <label for="username">acsacasc</label>
             <label style="color: red"><?php echo $errors['name'] ?? ''; ?></label>
             <input type="text" id="username" name="name" placeholder="Enter username" required />
             <small>Error message</small>

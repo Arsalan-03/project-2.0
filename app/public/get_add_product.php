@@ -33,9 +33,11 @@
             <hr>
 
             <label for="email"><b>Product_id</b></label>
+            <label style="color: red"> <?php echo $errors['product_id'] ?? '';?></label>
             <input type="text" placeholder="Enter Email" name="product_id" id="email" required>
 
             <label for="psw"><b>Quantity</b></label>
+            <label style="color: red"> <?php echo $errors['quantity'] ?? '';?></label>
             <input type="password" placeholder="Enter Password" name="quantity" id="psw" required>
 
             <button type="submit" class="registerbtn">Добавить</button>

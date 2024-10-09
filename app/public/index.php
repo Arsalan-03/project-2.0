@@ -1,40 +1,49 @@
 <?php
+
+use Controller\ProductController;
+use Controller\UserController;
+
+require_once './../Controller/UserController.php';
+require_once './../Controller/ProductController.php';
+
+
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 if ($requestUri === '/login') {
     if ($requestMethod === 'GET') {
-        require_once './get_login.php';
+        $userController = new UserController();
+        $userController->getLoginForm();
     } elseif ($requestMethod === 'POST') {
-        require_once './post_login.php';
+        $userController = new UserController();
+        $userController->login();
     } else {
         echo "$requestMethod не поддерживается адресом $requestUri";
     }
 } elseif ($requestUri === '/registrate') {
     if ($requestMethod === 'GET') {
-        require_once './get_registration.php';
+        $userController = new UserController();
+        $userController->getRegistrateForm();
     } elseif ($requestMethod === 'POST') {
-        require_once './post_registration.php';
+        $userController = new UserController();
+        $userController->registrate();
     } else {
         echo "$requestMethod не поддерживается адресом $requestUri";
     }
 } elseif ($requestUri === '/main') {
     if ($requestMethod === 'GET') {
-        require_once './main.php';
+        $productController = new ProductController();
+        $productController->getMain();
     } else {
         echo "$requestMethod не поддерживается адресом $requestUri";
     }
 } elseif ($requestUri === '/add-product') {
     if ($requestMethod === 'GET') {
-        require_once './get_add_product.php';
+        $productController = new ProductController();
+        $productController->getAddProductForm();
     } elseif ($requestMethod === 'POST') {
-        require_once './post_add_product.php';
-    } else {
-        echo "$requestMethod не поддерживается адресом $requestUri";
-    }
-} elseif ($requestUri === '/basket') {
-    if ($requestMethod === 'GET') {
-        require_once './basket.php';
+        $productController = new ProductController();
+        $productController->addProduct();
     } else {
         echo "$requestMethod не поддерживается адресом $requestUri";
     }

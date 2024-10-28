@@ -1,53 +1,22 @@
 <?php
 
-use Controller\ProductController;
-use Controller\UserController;
+use Core\src;
 
-require_once './../Controller/UserController.php';
-require_once './../Controller/ProductController.php';
+$autoload = function (string $className)
+{
+    $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+    $path = './../' . $path . '.php';
 
+    if (file_exists($path)) {
+        require_once $path;
+        return true;
+    }
+    return false;
+};
 
-$requestUri = $_SERVER['REQUEST_URI'];
-$requestMethod = $_SERVER['REQUEST_METHOD'];
+spl_autoload_register($autoload);
 
-if ($requestUri === '/login') {
-    if ($requestMethod === 'GET') {
-        $userController = new UserController();
-        $userController->getLoginForm();
-    } elseif ($requestMethod === 'POST') {
-        $userController = new UserController();
-        $userController->login();
-    } else {
-        echo "$requestMethod не поддерживается адресом $requestUri";
-    }
-} elseif ($requestUri === '/registrate') {
-    if ($requestMethod === 'GET') {
-        $userController = new UserController();
-        $userController->getRegistrateForm();
-    } elseif ($requestMethod === 'POST') {
-        $userController = new UserController();
-        $userController->registrate();
-    } else {
-        echo "$requestMethod не поддерживается адресом $requestUri";
-    }
-} elseif ($requestUri === '/main') {
-    if ($requestMethod === 'GET') {
-        $productController = new ProductController();
-        $productController->getMain();
-    } else {
-        echo "$requestMethod не поддерживается адресом $requestUri";
-    }
-} elseif ($requestUri === '/add-product') {
-    if ($requestMethod === 'GET') {
-        $productController = new ProductController();
-        $productController->getAddProductForm();
-    } elseif ($requestMethod === 'POST') {
-        $productController = new ProductController();
-        $productController->addProduct();
-    } else {
-        echo "$requestMethod не поддерживается адресом $requestUri";
-    }
-} else {
-    http_response_code(404);
-    require_once './404.php';
-}
+// Создаем экземпляр класса и запускаем приложение
+$app = new src();
+$app->run();
+

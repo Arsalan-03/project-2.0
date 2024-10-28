@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Model\Users;
+use Model\User;
 use PDOException;
 
 // Константы для сообщений об ошибках
@@ -13,7 +13,6 @@ define('ERROR_NAME_INVALID', 'Имя может содержать только 
 define('ERROR_EMAIL_REQUIRED', 'Заполните поле email');
 define('ERROR_EMAIL_INVALID', 'Некорректно введён email');
 define('ERROR_EMAIL_SHORT', 'Email слишком короткий');
-define('ERROR_EMAIL_LONG', 'Email слишком длинный');
 define('ERROR_PASSWORD_REQUIRED', 'Заполните поле password');
 define('ERROR_PASSWORD_SHORT', 'Password слишком короткий');
 define('ERROR_PASSWORD_REPEAT_REQUIRED', 'Заполните поле повторного ввода пароля');
@@ -21,7 +20,7 @@ define('ERROR_PASSWORDS_MISMATCH', 'Пароли не совпадают');
 define('ERROR_LOGIN_REQUIRED', 'Поле name не должно быть пустым');
 define('ERROR_LOGIN_USERS', 'Неверный логин или пароль');
 
-require_once './../Model/Users.php';
+require_once './../Model/User.php';
 
 class UserController
 {
@@ -44,7 +43,7 @@ class UserController
                 // Хеширование пароля
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-                $create = new Users();
+                $create = new User();
                 $create->create($name, $email, $hashedPassword);
 
                 header("Location: /login");
@@ -86,8 +85,6 @@ class UserController
                 $errors['email'] = ERROR_EMAIL_INVALID;
             } elseif (strlen($email) < 5) {
                 $errors['email'] = ERROR_EMAIL_SHORT;
-            } elseif (strlen($email) > 255) {
-                $errors['email'] = ERROR_EMAIL_LONG;
             }
         } else {
             $errors['email'] = ERROR_EMAIL_REQUIRED;
@@ -134,7 +131,7 @@ class UserController
             $password = $_POST['password'];
 
             try {
-                $data = new Users();
+                $data = new User();
                 $user = $data->getUserByEmail($login);
 
                 if ($user === false) {
@@ -169,7 +166,7 @@ class UserController
 
         // Валидация поля login
         if (isset($_POST['login'])) {
-            $login = $_POST['login'];
+            $login = htmlspecialchars($_POST['login'], ENT_QUOTES, 'UTF-8');
             if (empty($login)) {
                 $errors['login'] = ERROR_LOGIN_REQUIRED;
             }
@@ -179,7 +176,7 @@ class UserController
 
         // Валидация поля password
         if (isset($_POST['password'])) {
-            $password = $_POST['password'];
+            $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
             if (empty($password)) {
                 $errors['password'] = ERROR_PASSWORD_REQUIRED;
             }

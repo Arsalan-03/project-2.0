@@ -12,19 +12,19 @@
 </head>
 <body>
 
-<header>
-    <a href="#" class="logo">Роллы</a>
-    <nav>
-        <ul>
-            <li><a href="/main" id="cart-button">HOME</a></li>
-            <li><a href="/add-product">Add-Cart</a></li>
-            <li><a href="">Technologies</a></li>
-            <li><a href="">Portfolio</a></li>
-            <li><a href="">Description</a></li>
-            <li><a href="">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<!--<header>-->
+<!--    <a href="#" class="logo">Роллы</a>-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="/main" id="cart-button">HOME</a></li>-->
+<!--            <li><a href="/add-product">Add-Cart</a></li>-->
+<!--            <li><a href="">Technologies</a></li>-->
+<!--            <li><a href="">Portfolio</a></li>-->
+<!--            <li><a href="">Description</a></li>-->
+<!--            <li><a href="">Contact</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</header>-->
 
 <form action="/add-product" method="post">
     <div class="container">

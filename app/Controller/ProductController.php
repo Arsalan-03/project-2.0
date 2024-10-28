@@ -2,16 +2,16 @@
 
 namespace Controller;
 
-use Model\Products;
-use Model\UserProducts;
+use Model\Product;
+use Model\UserProduct;
 use PDOException;
 
 define('ERROR_PRODUCT_ID_REQUIRED', 'Поле product-id не должно быть пустым');
 define('ERROR_QUANTITY_REQUIRED', 'Поле quantity не должно быть пустым');
 define('ERROR_CHECK_REQUIRED', 'Введите корректный ID товара');
 
-require_once './../Model/Products.php';
-require_once './../Model/UserProducts.php';
+require_once './../Model/Product.php';
+require_once './../Model/UserProduct.php';
 
 
 class ProductController
@@ -22,14 +22,13 @@ class ProductController
 
         if (!isset($_SESSION['login'])) {
             header("location: /login");
-            exit();
         } else {
             $userId = $_SESSION['login'];
 
-            $data = new Products();
+            $data = new Product();
             $products = $data->getProducts();
 
-            $cart = new UserProducts();
+            $cart = new UserProduct();
             $userProducts = $cart->getCart($userId);
 
             require_once './../View/main.php';
@@ -50,16 +49,22 @@ class ProductController
 
     public function addProduct()
     {
+        session_start();
+
+        if (!isset($_SESSION['login'])) {
+            // Handle user not logged in
+            return; // Or redirect to login page
+        }
+
         $errors = $this->validateAddProduct();
 
         if (empty($errors)) {
-            session_start();
             $userId = $_SESSION['login'];
             $productId = $_POST['product_id'];
-            $quantity = $_POST['quantity'];
+            $quantity = (int)$_POST['quantity'];
 
             try {
-                $data = new UserProducts();
+                $data = new UserProduct();
                 $checkProductId = $data->checkIdProduct($productId);
 
                 if ($checkProductId === false) {
@@ -67,21 +72,23 @@ class ProductController
                 } else {
                     $checkProductInCart = $data->checkProductInCart($userId, $productId);
 
-                    if ($checkProductInCart === false) {
-                        $data->addProductCart($userId, $productId, $quantity);
-                    } else {
+                    if ($checkProductInCart) {
+                        // Update quantity if product is already in cart
                         $newAmount = $quantity + $checkProductInCart['quantity'];
-                        $data->updateProductQuantity($productId, $userId, $newAmount);
+                        $data->updateProductQuantity($newAmount, $productId, $userId);
+                    } else {
+                        // Add new product to cart
+                        $data->addProductToCart($userId, $productId, $quantity);
                     }
                 }
             } catch (PDOException $e) {
-                // Логирование ошибки
                 error_log("Ошибка при добавлении продукта: " . $e->getMessage());
                 $errors['database'] = "Произошла ошибка при добавлении продукта. Пожалуйста, попробуйте позже.";
             }
         }
 
         // Передаем ошибки в представление
+        print_r($errors);
         require_once './../View/addProduct.php';
     }
 

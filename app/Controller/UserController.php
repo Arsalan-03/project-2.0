@@ -20,17 +20,15 @@ define('ERROR_PASSWORDS_MISMATCH', 'Пароли не совпадают');
 define('ERROR_LOGIN_REQUIRED', 'Поле name не должно быть пустым');
 define('ERROR_LOGIN_USERS', 'Неверный логин или пароль');
 
-require_once './../Model/User.php';
-
 class UserController
 {
 
-    public function getRegistrateForm()
+    public function getRegistrateForm(): void
     {
         require_once './../View/registrate.php';
     }
 
-    public function registrate()
+    public function registrate(): void
     {
         $errors = $this->validateRegistrate();
 

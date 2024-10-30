@@ -2,60 +2,10 @@
 
 namespace Core;
 
-use Controller\OrderController;
-use Controller\ProductController;
-use Controller\UserController;
 
 class src
 {
-    private array $routes = [
-        '/login' => [
-            'GET' => [
-                'class' => UserController::class,
-                'method' => 'getLoginForm',
-            ],
-            'POST' => [
-                'class' => UserController::class,
-                'method' => 'login',
-            ],
-        ],
-        '/registrate' => [
-            'GET' => [
-                'class' => UserController::class,
-                'method' => 'getRegistrateForm',
-            ],
-            'POST' => [
-                'class' => UserController::class,
-                'method' => 'registrate',
-            ],
-        ],
-        '/main' => [
-            'GET' => [
-                'class' => ProductController::class,
-                'method' => 'getMain',
-            ],
-        ],
-        '/add-product' => [
-            'GET' => [
-                'class' => ProductController::class,
-                'method' => 'getAddProductForm',
-            ],
-            'POST' => [
-                'class' => ProductController::class,
-                'method' => 'addProduct',
-            ],
-        ],
-        '/order' => [
-            'GET' => [
-                'class' => OrderController::class,
-                'method' => 'getOrderForm',
-            ],
-            'POST' => [
-                'class' => OrderController::class,
-                'method' => 'order',
-            ],
-        ],
-    ];
+    private array $routes = [];
 
     public function run()
     {
@@ -75,6 +25,41 @@ class src
             // Если маршрут не найден, возвращаем ошибку 404
             require_once './../View/404.php';
         }
+    }
+
+    public function get(string $route, string $class, string $method, string $requestClass = null): void
+    {
+        $this->routes[$route]['GET'] = [
+            'class' => $class,
+            'method' => $method,
+            'request' => $requestClass
+        ];
+    }
+    public function post(string $route, string $class, string $method, string $requestClass = null): void
+    {
+        $this->routes[$route]['POST'] = [
+            'class' => $class,
+            'method' => $method,
+            'request' => $requestClass
+        ];
+    }
+
+    public function pull(string $route, string $class, string $method, string $requestClass = null): void
+    {
+        $this->routes[$route]['PULL'] = [
+            'class' => $class,
+            'method' => $method,
+            'request' => $requestClass
+        ];
+    }
+
+    public function delete(string $route, string $class, string $method, string $requestClass = null): void
+    {
+        $this->routes[$route]['DELETE'] = [
+            'class' => $class,
+            'method' => $method,
+            'request' => $requestClass
+        ];
     }
 }
 

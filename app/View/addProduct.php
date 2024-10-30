@@ -26,23 +26,23 @@
 <!--    </nav>-->
 <!--</header>-->
 
-<form action="/add-product" method="post">
-    <div class="container">
-        <div class="color-btn">
-            <h1>Добавление товара</h1>
-            <hr>
-
-            <label for="email"><b>Product_id</b></label>
-            <input type="text" placeholder="Enter Email" name="product_id" id="email" required>
-
-            <label for="psw"><b>Quantity</b></label>
-            <input type="password" placeholder="Enter Password" name="quantity" id="psw" required>
-
-            <button type="submit" class="registerbtn">Добавить</button>
-        </div>
-
-    </div>
-</form>
+<!--<form action="/add-product" method="post">-->
+<!--    <div class="container">-->
+<!--        <div class="color-btn">-->
+<!--            <h1>Добавление товара</h1>-->
+<!--            <hr>-->
+<!---->
+<!--            <label for="email"><b>Product_id</b></label>-->
+<!--            <input type="text" placeholder="Enter Email" name="product_id" id="email" required>-->
+<!---->
+<!--            <label for="psw"><b>Quantity</b></label>-->
+<!--            <input type="password" placeholder="Enter Password" name="quantity" id="psw" required>-->
+<!---->
+<!--            <button type="submit" class="registerbtn">Добавить</button>-->
+<!--        </div>-->
+<!---->
+<!--    </div>-->
+<!--</form>-->
 
 </body>
 </html>q

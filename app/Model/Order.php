@@ -4,12 +4,11 @@ namespace Model;
 
 use PDO;
 
-class Order
+class Order extends Model
 {
     public function addOrder(string $email, string $phone, string $name, string $address, string $city, string $country,int $postal)
     {
-        $pdo = new PDO('pgsql:host=db;port=5432;dbname=postgres', 'arsik', '0000');
-        $stmt = $pdo->prepare("INSERT INTO orders(email, phone, name, address, city, country, postal) VALUES (:email, :phone, :name, :address, :city, :country, :postal) RETURNING id");
+        $stmt = $this->pdo->prepare("INSERT INTO orders(email, phone, name, address, city, country, postal) VALUES (:email, :phone, :name, :address, :city, :country, :postal) RETURNING id");
         $stmt->execute(['email' => $email, 'phone' => $phone, 'name' => $name, 'address' => $address, 'city' => $city, 'country' => $country, 'postal' => $postal]);
 
         return $stmt->fetchColumn();

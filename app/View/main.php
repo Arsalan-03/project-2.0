@@ -6,104 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Меню</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
     <style>
         /* Ваши стили */
-    </style>
-</head>
-<body>
-
-<header>
-    <a href="#" class="logo">Роллы</a>
-    <nav>
-        <ul>
-            <li><a href="#" id="cart-button">Cart</a></li>
-            <li><a href="/add-product">Add-Cart</a></li>
-            <li><a href="">Technologies</a></li>
-            <li><a href="">Portfolio</a></li>
-            <li><a href="">Description</a></li>
-            <li><a href="">Contact</a></li>
-        </ul>
-    </nav>
-</header>
-
-<div class="container">
-    <h3>Catalog</h3>
-    <div class="card-deck">
-        <?php if (isset($products)) : ?>
-            <?php foreach ($products as $product) : ?>
-                <div class="card text-center">
-                    <a href="#">
-                        <img class="card-img-top" src="<?php echo htmlspecialchars($product['image']); ?>" alt="Card image">
-                        <div class="card-body">
-                            <p class="card-text text-muted"><?php echo htmlspecialchars($product['name']); ?></p>
-                            <a href="#"><h5 class="card-title"><?php echo htmlspecialchars($product['info']); ?></h5></a>
-                        </div>
-                        <div class="card-footer">
-                            <?php echo htmlspecialchars($product['price']); ?>
-                        </div>
-                    </a>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-</div>
-
-<div class="mini-cart-popup" id="mini-cart">
-    <div class="cart-header">
-        <h2>My Cart</h2>
-        <button class="close-btn" id="close-cart">&times;</button>
-    </div>
-    <div class="free-shipping">
-        <span class="shipping-icon">🚚</span>
-        <span>You've qualified for free shipping</span>
-    </div>
-    <div class="separator"></div>
-    <?php if (isset($userProducts)) : ?>
-        <?php foreach ($userProducts as $userProduct): ?>
-            <div class="cart-item">
-                <img src="<?php echo htmlspecialchars($userProduct['image']); ?>" alt="Product Image" class="product-image">
-                <div class="product-details">
-                    <p><?php echo htmlspecialchars($userProduct['name']); ?></p>
-                    <p class="price"><?php echo htmlspecialchars($userProduct['price']); ?></p>
-                    <div class="quantity-selector">
-                        <button class="minus-btn">−</button>
-                        <input type="text" value="<?php echo htmlspecialchars($userProduct['quantity']); ?>" class="quantity-input">
-                        <button class="plus-btn">+</button>
-                    </div>
-                </div>
-                <button class="delete-btn">🗑️</button>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
-<!--    <div class="total">-->
-<!--        <span>Total:</span>-->
-<!--        <span class="total-amount">£ . --><?php //echo $totalPrice; ?><!-- </span>-->
-<!--    </div>-->
-    <div class="cart-footer">
-        <button class="view-bag-btn">View Bag (1)</button>
-        <button class="checkout-btn">Checkout</button>
-    </div>
-</div>
-
-<script>
-    document.getElementById('cart-button').addEventListener('click', function() {
-        document.getElementById('mini-cart').classList.add('active');
-    });
-
-    document.getElementById('close-cart').addEventListener('click', function() {
-        document.getElementById('mini-cart').classList.remove('active');
-    });
-</script>
-
-</body>
-</html>q
-
-    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: sans-serif;
+            font-family: 'Roboto', sans-serif;
             list-style: none;
             text-decoration: none;
         }
@@ -164,75 +75,117 @@
             margin-top: 80px;
         }
 
-        .card-deck {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-top: 70px;
+        section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+            position: fixed;
         }
 
-        .card {
-            flex: 1 1 calc(25% - 1rem);
-            max-width: calc(25% - 1rem);
-            margin: 1rem 0.5rem;
-            border: 1px solid #e0e0e0;
+        .product-card {
+            max-width: 250px;
+            position: relative;
+            box-shadow: 0 2px 5px #333;
+            background: #1A2238;
             border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        .badge {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+            background: #6E6E6E;
+            color: #BCFD4C;
+            padding: 3px 10px;
+            border-radius: 0 5px 5px 0;
         }
 
-        .card-img-top {
+        .product-thumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             height: 200px;
-            object-fit: cover;
+            padding: 20px;
+            background: #EAD6CD;
         }
 
-        .card-body {
-            padding: 1rem;
+        .product-thumb img {
+            max-width: 100%;
+            max-height: 100%;
         }
 
-        .card-title {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+        .product-details {
+            padding: 20px;
         }
 
-        .card-text {
-            font-size: 0.875rem;
-            color: #6c757d;
+        .product-details h4 a {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            color: #00ABE1;
+            text-decoration: none;
+            transition: 0.3s;
         }
 
-        .card-footer {
-            padding: 0.75rem 1.25rem;
-            background-color: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.125rem;
+        .product-details h4 a:hover {
+            color: #F52544;
         }
 
-        @media (max-width: 992px) {
-            .card {
-                flex: 1 1 calc(33.333% - 1rem);
-                max-width: calc(33.333% - 1rem);
-            }
+        .product-details p {
+            font-size: 14px;
+            line-height: 18px;
+            margin-bottom: 10px;
+            color: #99DDFF;
         }
 
-        @media (max-width: 768px) {
-            .card {
-                flex: 1 1 calc(50% - 1rem);
-                max-width: calc(50% - 1rem);
-            }
+        .product-bottom-details {
+            overflow: hidden;
+            border-top: 1px solid #99DDFF;
+            padding-top: 10px;
         }
 
-        @media (max-width: 576px) {
-            .card {
-                flex: 1 1 100%;
-                max-width: 100%;
-            }
+        .product-bottom-details div {
+            float: left;
+            width: 50%;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #F52544;
+            font-weight: 600;
+        }
+
+        .product-price small {
+            font-size: 80%;
+            font-weight: 400;
+            text-decoration: line-through;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .product-links {
+            display: flex;
+            justify-content: flex-end ;
+            text-align: right;
+        }
+
+        .product-links a {
+            display: inline-block;
+            margin-left: 5px;
+            color: #5CE0D8;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .product-links a:hover {
+            color: #F52544;
         }
 
         .mini-cart-popup {
@@ -376,3 +329,94 @@
         }
     </style>
 </head>
+<body>
+
+<header>
+    <a href="#" class="logo">Роллы</a>
+    <nav>
+        <ul>
+            <li><a href="#" id="cart-button">Cart</a></li>
+            <li><a href="/add-product">Add-Cart</a></li>
+            <li><a href="">Technologies</a></li>
+            <li><a href="">Portfolio</a></li>
+            <li><a href="">Description</a></li>
+            <li><a href="">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <section>
+        <?php if (isset($products)) {
+            foreach ($products as $product):
+                ?>
+                <div class="product-card">
+                    <div class="badge">New Product</div>
+                    <div class="product-thumb">
+                        <img src="<?= $product['image']; ?>">
+                    </div>
+                    <div class="product-details">
+                        <h4><a href="#"><?= $product['name']; ?></a></h4>
+                        <p><?= $product['info']; ?></p>
+                        <div class="product-bottom-details">
+                            <div class="product-price"><small><?= $product['price']; ?></small>$7.99</div>
+                            <div class="product-links">
+                                <form>
+                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                </form>
+                                <form action="/add-product" method="post">
+                                   <button><a href="#"><i class="fa fa-shopping-cart"></i></a> </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; } ?>
+    </section>
+</div>
+
+<div class="mini-cart-popup" id="mini-cart">
+    <div class="cart-header">
+        <h2>My Cart</h2>
+        <button class="close-btn" id="close-cart">&times;</button>
+    </div>
+    <div class="free-shipping">
+        <span class="shipping-icon">🚚</span>
+        <span>You've qualified for free shipping</span>
+    </div>
+    <div class="separator"></div>
+    <?php if (isset($userProducts)) : ?>
+        <?php foreach ($userProducts as $userProduct): ?>
+            <div class="cart-item">
+                <img src="<?php echo htmlspecialchars($userProduct['image']); ?>" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <p><?php echo htmlspecialchars($userProduct['name']); ?></p>
+                    <p class="price"><?php echo htmlspecialchars($userProduct['price']); ?></p>
+                    <div class="quantity-selector">
+                        <button class="minus-btn">−</button>
+                        <input type="text" value="<?php echo htmlspecialchars($userProduct['quantity']); ?>" class="quantity-input">
+                        <button class="plus-btn">+</button>
+                    </div>
+                </div>
+                <button class="delete-btn">🗑️</button>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    <div class="cart-footer">
+        <button class="view-bag-btn">View Bag (1)</button>
+        <button class="checkout-btn">Checkout</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('cart-button').addEventListener('click', function() {
+        document.getElementById('mini-cart').classList.add('active');
+    });
+
+    document.getElementById('close-cart').addEventListener('click', function() {
+        document.getElementById('mini-cart').classList.remove('active');
+    });
+</script>
+
+</body>
+</html>

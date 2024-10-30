@@ -10,10 +10,6 @@ define('ERROR_PRODUCT_ID_REQUIRED', 'Поле product-id не должно бы�
 define('ERROR_QUANTITY_REQUIRED', 'Поле quantity не должно быть пустым');
 define('ERROR_CHECK_REQUIRED', 'Введите корректный ID товара');
 
-require_once './../Model/Product.php';
-require_once './../Model/UserProduct.php';
-
-
 class ProductController
 {
     public function getMain(): void
@@ -95,26 +91,6 @@ class ProductController
     public function validateAddProduct(): array
     {
         $errors = [];
-
-        // Валидация поля product_id
-        if (isset($_POST['product_id'])) {
-            $productId = $_POST['product_id'];
-            if (empty($productId)) {
-                $errors['product_id'] = ERROR_PRODUCT_ID_REQUIRED;
-            }
-        } else {
-            $errors['product_id'] = ERROR_PRODUCT_ID_REQUIRED;
-        }
-
-        // Валидация поля quantity
-        if (isset($_POST['quantity'])) {
-            $quantity = $_POST['quantity'];
-            if (empty($quantity)) {
-                $errors['quantity'] = ERROR_QUANTITY_REQUIRED;
-            }
-        } else {
-            $errors['quantity'] = ERROR_QUANTITY_REQUIRED;
-        }
 
         return $errors;
     }

@@ -13,10 +13,6 @@ define('ERROR_CITY_REQUIRED', 'Поле city не должно быть пуст
 define('ERROR_COUNTRY_REQUIRED', 'Поле country не должно быть пустым');
 define('ERROR_POSTAL_REQUIRED', 'Поле postal не должно быть пустым');
 
-require_once './../Model/Order.php';
-require_once './../Model/OrderProduct.php';
-require_once './../Model/UserProduct.php';
-
 class OrderController
 {
     public function getOrderForm(): void
